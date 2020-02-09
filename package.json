@@ -1,0 +1,51 @@
+{
+	"name": "WQL",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "cross-env NODE_ENV=production babel-node ./server.js",
+		"dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@elastic/elasticsearch": "^7.5.1",
+		"axios": "^0.19.2",
+		"body-parser": "^1.19.0",
+		"chalk": "^3.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-timeout-handler": "^2.2.0",
+		"jsonwebtoken": "^8.5.1",
+		"lowdash": "^1.2.0",
+		"moment": "^2.24.0",
+		"mongodb": "^3.5.2",
+		"mongoose": "^5.8.11",
+		"oracledb": "^4.2.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.4.5",
+		"@babel/node": "^7.2.2",
+		"@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+		"@babel/preset-env": "^7.4.5",
+		"babel-eslint": "^10.0.3",
+		"babel-jest": "^24.8.0",
+		"babel-loader": "^8.0.5",
+		"cross-env": "^6.0.3",
+		"eslint": "^6.6.0",
+		"eslint-config-prettier": "^6.5.0",
+		"eslint-plugin-prettier": "^3.1.1",
+		"jest": "^24.8.0",
+		"jest-cli": "^24.8.0",
+		"lodash": "^4.17.15",
+		"morgan": "^1.9.1",
+		"moxios": "^0.4.0",
+		"nodemon": "^1.18.9",
+		"prettier": "^1.16.4",
+		"supertest": "^4.0.2"
+	}
+}
