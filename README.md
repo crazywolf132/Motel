@@ -1,1 +1,1 @@
-# WQL
+# Motel
