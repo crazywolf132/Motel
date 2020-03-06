@@ -3,4 +3,4 @@
 </p>
 <h1 align="center" size="1">Motel</h1>
 
-<b>Version</b> <small>1.0.1</small>
+<b align="center">Version</b> <small align="center">1.0.1</small>
