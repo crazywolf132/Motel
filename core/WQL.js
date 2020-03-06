@@ -27,13 +27,9 @@ share._routes = {};
 
 share.start = async () => {
 	// Need to get the latest routes file.
-	await axios
-		.get(
-			`https://github.service.anz/raw/moonb/Bellona-Modules/master/ROUTES.json`
-		)
-		.then(response => {
-			share._routes = response.data;
-		});
+	await axios.get(`${process.env.HOME_URL}/ROUTES.json`).then(response => {
+		share._routes = response.data;
+	});
 
 	share.loadModules();
 };
@@ -70,17 +66,13 @@ share.findModule = async (modName, res) => {
 	}
 
 	await axios
-		.get(
-			`https://github.service.anz/raw/moonb/Bellona-Modules/master/${share._routes[modName]}/VERSION`
-		)
+		.get(`${process.env.HOME_URL}/${share._routes[modName]}/VERSION`)
 		.then(response => {
 			writeFileSync(`${modPath}VERSION`, response.data);
 		})
 		.then(() => {
 			axios
-				.get(
-					`https://github.service.anz/raw/moonb/Bellona-Modules/master/${share._routes[modName]}/mod.js`
-				)
+				.get(`${process.env.HOME_URL}/${share._routes[modName]}/mod.js`)
 				.then(res => {
 					writeFileSync(`${modPath}mod.js`, res.data);
 				});
@@ -92,9 +84,7 @@ share.findModule = async (modName, res) => {
 };
 share.updateModule = (modName, res) => {
 	axios
-		.get(
-			`https://github.service.anz/raw/moonb/Bellona-Modules/master/${share._routes[modName]}/VERSION`
-		)
+		.get(`${process.env.HOME_URL}/${share._routes[modName]}/VERSION`)
 		.then(response => {
 			const latestVersion = response.data.version;
 			const currentVersion = require(`${process.cwd()}/mods/${
