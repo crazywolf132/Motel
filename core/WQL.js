@@ -37,6 +37,21 @@ share.start = async () => {
 		share._routes = response.data;
 	});
 
+	await axios
+		.get(`${process.env.HOME_URL}/ROUTES.json`)
+		.then(response => {
+			share._routes = response.data;
+		})
+		.catch(err => {
+			// This means that we cant get it for some reason... so we will do a scan for everything we have.
+			let mods = [];
+			findFilesAndFolders(`${process.cwd()}/mods/`, mods, true, true, false);
+			log(mods);
+			mods.forEach(mod => {
+				share._routes[mod] = mod;
+			});
+		});
+
 	share.loadModules();
 };
 
