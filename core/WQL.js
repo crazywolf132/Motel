@@ -546,6 +546,15 @@ share.addPreset = (presetName, data) => {
 	share._presets[presetName][data.key] = data;
 };
 share.workoutMode = modName => {
+	const type = share._connections[modName].type;
+	if (type == undefined) {
+		return (req, res) => {
+			res.status(400).json({
+				status: 'FAILED',
+				error: 'Module does not exist. Incorrect name?'
+			});
+		};
+	}
 	switch (share._connections[modName].type) {
 		case 'elastic':
 			return share.performElasticSearch;
