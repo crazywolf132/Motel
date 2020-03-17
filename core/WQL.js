@@ -89,14 +89,74 @@ share.loadModules = () => {
 		}
 	});
 };
-share.route = (path, callBack) => {
-	share._router.post(
-		'/:modName' + path,
-		share._middleware,
-		(req, res, next) => {
-			callBack(req, res, next);
-		}
-	);
+share.route = (path, callBack, options = {}) => {
+	switch (options.method ? options.method.toLowerCase() : 'post') {
+		case 'delete':
+			share._router.delete(
+				`/${currentMod}${path}`,
+				options.disableWQLMiddleware
+					? (req, res, next) => {
+							next();
+					  }
+					: share._middleware,
+				(req, res, next) => {
+					callBack(req, res, next);
+				}
+			);
+			return;
+		case 'put':
+			share._router.put(
+				`/${currentMod}${path}`,
+				options.disableWQLMiddleware
+					? (req, res, next) => {
+							next();
+					  }
+					: share._middleware,
+				(req, res, next) => {
+					callBack(req, res, next);
+				}
+			);
+			return;
+		case 'patch':
+			share._router.patch(
+				`/${currentMod}${path}`,
+				options.disableWQLMiddleware
+					? (req, res, next) => {
+							next();
+					  }
+					: share._middleware,
+				(req, res, next) => {
+					callBack(req, res, next);
+				}
+			);
+			return;
+		case 'get':
+			share._router.get(
+				`/${currentMod}${path}`,
+				options.disableWQLMiddleware
+					? (req, res, next) => {
+							next();
+					  }
+					: share._middleware,
+				(req, res, next) => {
+					callBack(req, res, next);
+				}
+			);
+			return;
+		case 'post':
+		default:
+			share._router.post(
+				`/${currentMod}${path}`,
+				options.disableWQLMiddleware
+					? (req, res, next) => {
+							next();
+					  }
+					: share._middleware,
+				(req, res, next) => {
+					callBack(req, res, next);
+				}
+			);
+	}
 };
 share.modExists = modName => {
 	return Object.keys(share._routes).indexOf(modName) > -1;
