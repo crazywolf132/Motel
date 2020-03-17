@@ -545,6 +545,8 @@ share.workoutMode = modName => {
 			return share.performMongoSearch;
 		case 'endpoint':
 			return share.performEndpointSearch;
+		case 'customData':
+			return share._connections[modName].data;
 		default:
 			log(`IT IS ::: ${share._connections[modName].type}`);
 	}
