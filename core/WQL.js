@@ -451,8 +451,10 @@ share.cleanElasticData = (WQL, json_data, modName) => {
 				}
 			});
 		}
+	}
 
-		// json_data = manipulate(WQL.manipulate, json_data);
+	if (WQL.count) {
+		json_data = countHandler(WQL, json_data);
 	}
 
 	if (WQL.duplicate !== undefined) {
