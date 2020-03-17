@@ -325,34 +325,41 @@ share.performOracleSearch = async (req, res) => {
 		return;
 	}
 
+	WQL.sql = Array.isArray(WQL.sql) ? WQL.sql : [WQL.sql];
 	try {
 		const details = share._connections[modName];
 		connection = await OracleDB.getConnection(details);
 		//TODO: CREATE SEARCH QUERY...
-		const result = await connection.execute(WQL.sql);
-		log(result);
-		if (WQL.dontFormat) {
-			res.json(result);
-			return;
-		} else {
-			let changed = [];
-			result.rows.forEach(document => {
-				let temp = {};
-				document.forEach((value, index) => {
-					temp[result.metaData[index].name] = value;
+		new Promise((resolve, reject) => {
+			let result = [];
+			WQL.sql.forEach(async (statement, index, array) => {
+				const results = await connection.execute(statement);
+				results.rows.forEach(document => {
+					let temp = {
+						'FROM_QUERY_#': index
+					};
+					document.forEach((value, index) => {
+						temp[results.metaData[index].name] = value;
+					});
+					result.push({
+						_source: temp
+					});
 				});
-				changed.push({
-					_source: temp
-				});
+				if (Object.is(array.length - 1, index)) {
+					resolve({
+						result: result
+					});
+				}
 			});
+		}).then(result => {
 			res.json(
 				share.cleanElasticData(
 					WQL,
-					{ body: { hits: { hits: changed } } },
+					{ body: { hits: { hits: result.result } } },
 					modName
 				)
 			);
-		}
+		});
 	} catch (error) {
 		log(error, 'ERROR');
 	}
