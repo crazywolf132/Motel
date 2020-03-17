@@ -227,7 +227,6 @@ share.addConnection = (modName, data) => {
 			let esClient = new require(`${process.cwd()}/clients/ElasticSearchClient`)
 				.default;
 			let client = new esClient();
-			log(client);
 			if (data.auth) {
 				client.addAuth(data.auth);
 			}
@@ -256,8 +255,6 @@ share.performEndpointSearch = async (req, res) => {
 			} else {
 				res.json(response.data);
 			}
-			// log(response.data);
-			// res.json(response.data);
 		})
 		.catch(err => {
 			if (details.catchCallBack) {
@@ -330,7 +327,6 @@ share.performOracleSearch = async (req, res) => {
 
 	try {
 		const details = share._connections[modName];
-		log(JSON.stringify(details, null, 2), 'DEBUG');
 		connection = await OracleDB.getConnection(details);
 		//TODO: CREATE SEARCH QUERY...
 		const result = await connection.execute(WQL.sql);
