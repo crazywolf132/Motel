@@ -99,6 +99,32 @@ handler.defaultHandler = (defaultList, json_data) => {
 	return json_data;
 };
 
+handler.countHandler = (WQL, json_data) => {
+	let results = {};
+	// We will just check the first document, if it has "FROM_QUERY_#",
+	// we will assume they want a count from each query.
+	if (json_data.body.hits.hits[0]._source.hasOwnProperty('FROM_QUERY_#')) {
+		// It does.
+		json_data.body.hits.hits.forEach(src => {
+			const hit = src._source;
+			// Getting the query number.
+			let number = hit['FROM_QUERY_#'];
+			// Updating count for that query number.
+			if (!results.hasOwnProperty(`query_${number}`)) {
+				results[`query_${number}`] = {
+					count: 1
+				};
+			}
+			results[`query_${number}`].count++;
+		});
+	} else {
+		results = { count: json_data.body.hits.hits.length };
+	}
+	if (!WQL.countAsSeperate) json_data.body.hits.hits = [{ _source: results }];
+	else json_data.body.counts = [results];
+	return json_data;
+};
+
 const dataContainsField = (json_data, field, value) => {
 	return json_data.hasOwnProperty(field) && json_data[field] === value;
 };
