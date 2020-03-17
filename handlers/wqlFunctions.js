@@ -99,6 +99,23 @@ handler.defaultHandler = (defaultList, json_data) => {
 	return json_data;
 };
 
+handler.combineHandler = (combineList, json_data) => {
+	if (!Array.isArray(combineList)) return json_data;
+
+	combineList.forEach(combineEntry => {
+		json_data.body.hits.hits.forEach(result => {
+			const data = result._source;
+			let list = [];
+			combineEntry.fields.forEach(field => {
+				list.push(data[field]);
+			});
+			data[combineEntry.name] = list.join(combineEntry['join'] || ' ');
+		});
+	});
+
+	return json_data;
+};
+
 handler.countHandler = (WQL, json_data) => {
 	let results = {};
 	// We will just check the first document, if it has "FROM_QUERY_#",
