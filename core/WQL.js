@@ -580,3 +580,23 @@ share.addEnviroment = (modName, data, value) => {
 	}
 	share._environments[modName][data] = value;
 };
+share.using = (datasource, modName, callback) => {
+	return new Promise((resolve, reject) => {
+		switch (datasource.toLowerCase()) {
+			case 'db':
+				callback(
+					new Database(
+						share._connections[modName],
+						share._connections[modName].type
+					).registerClient()
+				);
+				break;
+			case 'url':
+				callback(share._baseUrls[modName]);
+				break;
+			case 'env':
+				callback(share._environments[modName]);
+		}
+		resolve('SUCCESS');
+	});
+};
