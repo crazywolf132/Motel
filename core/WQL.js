@@ -463,6 +463,10 @@ share.cleanElasticData = (WQL, json_data, modName) => {
 		json_data = defaultHandler(WQL.default, json_data);
 	}
 
+	if (WQL.combine !== undefined) {
+		json_data = combineHandler(WQL.combine, json_data);
+	}
+
 	// Changing whats returned
 	if (requiredFields.length > 0) {
 		json_data.body.hits.hits.forEach(hit => {
@@ -484,6 +488,14 @@ share.cleanElasticData = (WQL, json_data, modName) => {
 	// Ignore being loaded.
 	if (WQL.ignore !== undefined) {
 		results.results = ignore(WQL.ignore, results.results);
+	}
+
+	if (json_data.body.aggregations !== undefined) {
+		results.aggregations = json_data.body.aggregations;
+	}
+
+	if (json_data.body.counts !== undefined) {
+		results.counts = json_data.body.counts;
 	}
 
 	// RETURNING THE FINISHED PRODUCT
