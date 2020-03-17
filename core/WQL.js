@@ -409,7 +409,12 @@ share.performElasticSearch = (req, res) => {
 
 	connection.client.getClient().search(options, (err, json_data) => {
 		if (err) {
-			res.send(err);
+			res.status(500).json({
+				status: 'FAILED',
+				message: 'It seems something is wrong with the connection...',
+				response: err
+			});
+			return;
 		}
 
 		res.json(share.cleanElasticData(WQL, json_data, modName));
