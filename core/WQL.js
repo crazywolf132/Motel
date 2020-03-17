@@ -377,7 +377,10 @@ share.performElasticSearch = (req, res) => {
 		}
 	};
 
-	if (WQL.search !== undefined) {
+	if (WQL.body !== undefined) {
+		payload = WQL.body;
+		log(JSON.stringify(WQL.body, null, 2), 'ERROR');
+	} else if (WQL.search !== undefined) {
 		WQL.search.forEach(wqlStatement => {
 			payload = share.createWQLBody(payload, wqlStatement);
 		});
