@@ -58,6 +58,17 @@ share.loadModules = () => {
 	mods.forEach(item => {
 		if (!(item in alreadyLoaded)) {
 			alreadyLoaded.push(item);
+			currentMod = item;
+			// Loading the ENVIRONMENT file
+			const enviroPath = `${process.cwd()}/mods/${item}/ENVIRONMENT.json`;
+			if (existsSync(enviroPath)) {
+				let enviro = require(enviroPath);
+
+				Object.keys(enviro).forEach(key => {
+					share.addEnvironment(item, key, enviro[key]);
+				});
+			}
+			// Loading the mod
 			let res = require(process.cwd() + `/mods/${item}/mod.js`);
 			res.core(share);
 		}
@@ -434,4 +445,10 @@ share.workoutMode = modName => {
 		default:
 			log(`IT IS ::: ${share._connections[modName].type}`);
 	}
+};
+share.addEnviroment = (modName, data, value) => {
+	if (Object.keys(share._environments).indexOf(modName) === -1) {
+		share._environments[modName] = {};
+	}
+	share._environments[modName][data] = value;
 };
