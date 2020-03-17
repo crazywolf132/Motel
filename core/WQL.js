@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { writeFileSync, existsSync, mkdirSync, fstat } from 'fs';
 import OracleDB from 'oracledb';
 import axios from 'axios';
+import { Database } from './Database';
 
 import { log, findFilesAndFolders, asyncForEach } from '../handlers/utils';
 import { checkWQL } from '../middleware/base';
@@ -14,7 +15,9 @@ import {
 	reValue,
 	duplicate,
 	defaultHandler,
-	manualSort
+	manualSort,
+	combineHandler,
+	countHandler
 } from '../handlers/wqlFunctions';
 
 share._baseUrls = {};
@@ -24,6 +27,9 @@ share._middleware = checkWQL;
 share._presets = {};
 share._customFunctions = {};
 share._routes = {};
+share._environments = {};
+
+let currentMod = '';
 
 share.start = async () => {
 	// Need to get the latest routes file.
