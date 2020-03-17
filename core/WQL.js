@@ -40,6 +40,17 @@ share.start = async () => {
 	share.loadModules();
 };
 
+share.wipe = async () => {
+	share._baseUrls = {};
+	share._connections = {};
+	share.router = Router();
+	share.middleware = checkWQL;
+	share._presets = {};
+	share._customFunctions = {};
+	share._routes = {};
+	share._environments = {};
+};
+
 share.loadModules = () => {
 	let alreadyLoaded = [];
 	let mods = [];
