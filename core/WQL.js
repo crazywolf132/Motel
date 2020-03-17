@@ -171,7 +171,10 @@ share.findModule = async (modName, res) => {
 	await axios
 		.get(`${process.env.HOME_URL}/${share._routes[modName]}/VERSION`)
 		.then(response => {
-			writeFileSync(`${modPath}VERSION`, response.data);
+			writeFileSync(
+				`${modPath}VERSION.json`,
+				JSON.stringify(response.data, null, 2)
+			);
 		})
 		.then(() => {
 			axios
