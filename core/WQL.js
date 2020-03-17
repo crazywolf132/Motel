@@ -551,6 +551,10 @@ share.workoutMode = modName => {
 			log(`IT IS ::: ${share._connections[modName].type}`);
 	}
 };
+share.moduleFailed = modName => {
+	share._routes[modName].failCount = 1;
+	share._routes[modName].down = share._routes[modName].failCount >= 3;
+};
 share.addEnviroment = (modName, data, value) => {
 	if (Object.keys(share._environments).indexOf(modName) === -1) {
 		share._environments[modName] = {};
