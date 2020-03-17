@@ -164,8 +164,8 @@ share.modExists = modName => {
 share.findModule = async (modName, res) => {
 	const modPath = `${process.cwd()}/mods/${share._routes[modName]}/`;
 
-	if (fstat.existsSync(modPath)) {
-		fs.mkdirSync(dir);
+	if (!existsSync(modPath)) {
+		mkdirSync(modPath);
 	}
 
 	await axios
