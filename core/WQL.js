@@ -198,9 +198,14 @@ share.updateModule = (modName, res) => {
 		.get(`${process.env.HOME_URL}/${share._routes[modName]}/VERSION`)
 		.then(response => {
 			const latestVersion = response.data.version;
-			const currentVersion = require(`${process.cwd()}/mods/${
-				share._routes[modName]
-			}/VERSION.json`).version;
+			let currentVersion;
+			const modPath = `${process.cwd()}/mods/${share._routes[modName]}/`;
+			if (!existsSync(modPath + 'VERSION.json')) {
+				mkdirSync(modPath);
+				currentVersion = '0.0.0.0.0.0';
+			} else {
+				currentVersion = require(`${modPath}/VERSION.json`).version;
+			}
 
 			if (latestVersion !== currentVersion) {
 				// Need to download module.
