@@ -85,7 +85,7 @@ share.loadModules = () => {
 			}
 			// Loading the mod
 			let res = require(process.cwd() + `/mods/${item}/mod.js`);
-			res.core(share);
+			res.core(share, share.using);
 		}
 	});
 };
